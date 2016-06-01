@@ -1,0 +1,21 @@
+{
+  "author": "Marcel Timmerman",
+  "authors": "Marcel Timmerman",
+  "depends": [
+  ],
+  "description": "String generator for plugin applications",
+  "license": "The Artistic License 2.0",
+  "name": "Genpath",
+  "perl": "6.c",
+  "provides": {
+    "Genpath::Plugin::Echo":            "lib/Genpath/Plugin/Echo.pm6",
+    "Genpath::Plugin::Wget":            "lib/Genpath/Plugin/Wget.pm6",
+    "Genpath::Options":                 "lib/Genpath/Options.pm6",
+    "Genpath::Plugin":                  "lib/Genpath/Plugin.pm6",
+    "Genpath":                          "lib/Genpath.pm6",
+
+    "genpath":                          "bin/genpath.pl6"
+  },
+  "source-url": "git://github.com/MARTIMM/.git",
+  "version": "0.2.2"
+}
