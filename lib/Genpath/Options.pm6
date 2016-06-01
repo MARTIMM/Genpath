@@ -9,9 +9,7 @@ class Genpath::Options {
   has Str $!config-content;
 
   #-----------------------------------------------------------------------------
-  submethod BUILD ( Str $config-file is copy = 'genpath.cfg' ) {
-
-    my Array $config-options = [];
+  submethod BUILD ( Str :$config-file is copy = 'genpath.cfg' ) {
 
     # Read file only once unless file cannot be found. Then there is another
     # opportunity to read it later when file is created.
