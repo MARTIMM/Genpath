@@ -51,10 +51,7 @@ class Genpath::Options {
   ) {
 
     # Get all options from specified section
-    my Hash $os = %(
-      %(self!get-options( 'options', $identity)),
-      %(self!get-options( 'options', $identity, $option-section)),
-    );
+    my Hash $os = self!get-options( 'options', $identity, $option-section);
 
     # Convert into Array
     if $os.elems {
