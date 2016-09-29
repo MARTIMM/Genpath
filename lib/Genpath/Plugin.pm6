@@ -27,12 +27,8 @@ class Genpath::Plugin {
         my $repository = CompUnit::Repository::FileSystem.new(
           :prefix($plugin-path)
         );
-        CompUnit::RepositoryRegistry.use-repository($repository);
 
-#say "\nRepositories:\n";
-#.Str.say for $*REPO.repo-chain;
-#say "\n";
-#say "Inserted repo: ", $*REPO.perl;
+        CompUnit::RepositoryRegistry.use-repository($repository);
       }
 
       require ::($module-name);
@@ -61,11 +57,8 @@ class Genpath::Plugin {
       self.identity(),
       $option-section
     );
-#say "A2: ", @$cfg-options;
 
     $!run-args.push: |@($cfg-options);
-#say "A3: ", @$!run-args;
-
     $!command-path = self.command;
 
 

@@ -76,15 +76,13 @@ class Genpath:ver<0.2.2> {
       $current-range-list = [];
 
       my $current-range := $!ranges[$range-i];
-#say "Curr range [$range-i]: $current-range";
 
       if $current-range ~~ m/^ <dot3range> $/ {
-#say "dot 3: ", ~$<dot3range><dot3list>, ', ', ~$<dot3range><final3number>;
+
         my List $dot3start = |map {.Rat}, $<dot3range><dot3list>.Str.split(',');
         my $dot3end = $<dot3range><final3number>.Rat;
 
         $current-range-list.push(|[@$dot3start ... $dot3end]);
-#say "0 --> ", $current-range-list;
       }
 
       # Test for counter and offset n+m, n-m or n*m. These ranges are locked with
@@ -96,8 +94,6 @@ class Genpath:ver<0.2.2> {
         my $counter = ~$/<counter>;
         my $oper = ~$/<oper>;
         my $offset = ~$/<offset>;
-
-#say "Oper: $counter $oper $offset";
 
         if $counter.defined and $oper.defined
            and $offset.defined and $counter < $range-i {
@@ -142,7 +138,6 @@ class Genpath:ver<0.2.2> {
         else {
           say "Count, operator or offset not defined";
         }
-#say "1 --> ", $current-range-list;
       }
 
       # Test for digital and alphabetic ranges n..m and lists a,b
@@ -153,13 +148,11 @@ class Genpath:ver<0.2.2> {
         #
         my List $range-items = $current-range.split(',');
         for @$range-items -> $ri {
-#say "range item: $ri ";
 
           # See if it is a range
           #
           if $ri ~~ m/ \.\. / {
             ( my $rmin, my $rmax) = $ri.split('..');
-#say "range $rmin, $rmax";
             if $rmin ~~ m/^ <alpha>+ $/ or $rmax ~~ m/^ <alpha>+ $/ {
               $current-range-list.push(|[$rmin .. $rmax]);
             }
@@ -179,21 +172,17 @@ class Genpath:ver<0.2.2> {
           }
 
           elsif $ri ~~ m/^ <[-+]>? <digit>+ $/ {
-#say "Ri 2a: $ri";
             $current-range-list.push($ri.Int);
           }
 
           elsif $ri ~~ m/^ <if-number> $/ {
-#say "Ri 2b: $ri";
             $current-range-list.push($ri.Rat);
           }
 
           else {
-#say "Ri 2c: $ri";
             $current-range-list.push($ri);
           }
         }
-#say "2 --> ", $current-range-list;
       }
     }
   }
@@ -253,7 +242,6 @@ class Genpath:ver<0.2.2> {
       my $ri = $!range-idxs[$ci];
       push @counters, $!range-lists[$ci][$ri];
     }
-#say "sprintf: $text, ", @counters;
 
     return sprintf( "'$text'", @counters);
   }
@@ -288,9 +276,6 @@ class Genpath:ver<0.2.2> {
         # Increment if less than range length and stop.
         #
         if $ri < $rlng {
-#say "ic:   C[$ci] $ri -> ", $ri+1, ", v = "
-#  , $self->get_rangelist($ci)->[$ri]
-#  , ' -> ', $self->get_rangelist($ci)->[$ri+1];
 
           $!range-idxs[$ci] = $ri + 1;
 
@@ -318,7 +303,6 @@ class Genpath:ver<0.2.2> {
         # counter.
         #
         else {
-#say "ic:   Reset C[$ci] $ri -> 0";
 
           $!range-idxs[$ci] = 0;
 
@@ -332,7 +316,6 @@ class Genpath:ver<0.2.2> {
           ) {
 
             my $dci = $!counter-mappings[$dc_i];
-#            my $dri = $self->_get_r_idx($dci);
             my $dcl = $!range-locks[$dci];
             if $dcl.defined and $dcl == $ci {
               $!range-idxs[$dci] = 0;
@@ -360,7 +343,6 @@ class Genpath:ver<0.2.2> {
 
     my $counter-i = $!range-lists.elems;
     ( $counter-i, $ci, $ri) = self!skip-locked-counters($counter-i);
-#say "CI: $counter-i";
 
     # Whatever the situation is for this counter, reset it.
     #
@@ -376,20 +358,16 @@ class Genpath:ver<0.2.2> {
     ) {
 
       my $dci = $!counter-mappings[$dc_i];
-  #    my $dri = $self->_get_r_idx($dci);
       my $dcl = $!range-locks[$dci];
       if $dcl.defined and $dcl == $ci {
         $!range-idxs[$dci] = 0;
       }
     }
 
-  #say "sc:   Counter $ci reset";
-
     my Bool $not-incremented = True;
     my $not-finished = True;
     while $not-incremented and $not-finished {
 
-#say "CI: $counter-i";
       # While counting backwards the last counter is 0. Control will pass here
       # only when counters are reset for the next round or when a counter depends
       # on another counter.
@@ -412,9 +390,6 @@ class Genpath:ver<0.2.2> {
       # If not set ref to 0 and check next counter.
       #
       if $ri < $rlng - 1 {
-  #say "sc:   C[$ci] $ri -> ", $ri+1, ", v = "
-  #  , $self->get_rangelist($ci)->[$ri]
-  #  , ' -> ', $self->get_rangelist($ci)->[$ri+1];
 
         $!range-idxs[$ci] = $ri + 1;
 
@@ -439,7 +414,6 @@ class Genpath:ver<0.2.2> {
       }
 
       else {
-  #say "sc:   Reset C[$ci] $ri -> 0";
 
         $!range-idxs[$ci] = 0;
 
@@ -474,7 +448,7 @@ class Genpath:ver<0.2.2> {
     # Check if counter is locked to another. If so skip.
     #
     repeat {
-#say "CI Rep: $counter-i";
+
       $counter-i--;
 
       $ci = $!counter-mappings[$counter-i];             # mapped counter
