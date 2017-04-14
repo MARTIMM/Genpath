@@ -1,4 +1,5 @@
-use v6.c;
+use v6;
+use lib '.';
 use Test;
 use Genpath;
 use Genpath::Options;

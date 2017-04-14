@@ -1,4 +1,4 @@
-use v6.c;
+use v6;
 use Genpath::Options;
 
 class Genpath::Plugin {
@@ -20,10 +20,10 @@ class Genpath::Plugin {
   }
 
   #-----------------------------------------------------------------------------
-  method install-plugin ( Str:D $module-name, Str :$plugin-path ) {
+  method install-plugin ( Str:D $module-name, Str :$plugin-path = '' ) {
 
     if $!module-names{$module-name}:!exists {
-      if $plugin-path.defined {
+      if ?$plugin-path {
         my $repository = CompUnit::Repository::FileSystem.new(
           :prefix($plugin-path)
         );
@@ -31,19 +31,34 @@ class Genpath::Plugin {
         CompUnit::RepositoryRegistry.use-repository($repository);
       }
 
-      require ::($module-name);
+#note "Load '$module-name'";
+      (try require ::($module-name)) === Nil
+           and say "Failed to load $module-name at $?LINE";
 
-      $!module-names{$module-name} = 1;
+#require ::($module-name);
+#say ::($module-name).new.perl;
+
+#say "Module name ", ::($module-name).^name;
+#say "Module methods", ::($module-name).^methods;
+
+      if ::($module-name) ~~ Failure {
+        die ::($module-name);
+      }
+
+      $!module-names{$module-name} = ::($module-name);
     }
   }
 
   #-----------------------------------------------------------------------------
   method generate-object ( Str:D $module-name --> Genpath::Plugin ) {
 
+#say "Module init $module-name: ", ::($module-name).perl;
+    ::($module-name).Bool;
     my Genpath::Plugin $object;
     if $!module-names{$module-name}:exists {
       $object = ::($module-name).new;
     }
+#say "Module init: ", $object.perl;
 
     $object;
   }

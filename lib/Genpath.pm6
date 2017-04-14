@@ -1,8 +1,8 @@
-use v6.c;
+use v6;
 use Genpath::Plugin;
 use Genpath::Options;
 
-class Genpath:ver<0.2.2> {
+class Genpath:ver<0.2.3> {
 
   has Str $.sprintf-text = '';
   has Array $.ranges = [];
@@ -79,7 +79,7 @@ class Genpath:ver<0.2.2> {
 
       if $current-range ~~ m/^ <dot3range> $/ {
 
-        my List $dot3start = |map {.Rat}, $<dot3range><dot3list>.Str.split(',');
+        my List $dot3start = |map {.Rat}, $<dot3range><dot3list>.Str.split(',').List;
         my $dot3end = $<dot3range><final3number>.Rat;
 
         $current-range-list.push(|[@$dot3start ... $dot3end]);
@@ -146,13 +146,13 @@ class Genpath:ver<0.2.2> {
 
         # Split on comma's and process resulting list
         #
-        my List $range-items = $current-range.split(',');
+        my List $range-items = $current-range.split(',').List;
         for @$range-items -> $ri {
 
           # See if it is a range
           #
           if $ri ~~ m/ \.\. / {
-            ( my $rmin, my $rmax) = $ri.split('..');
+            ( my $rmin, my $rmax) = $ri.split('..').List;
             if $rmin ~~ m/^ <alpha>+ $/ or $rmax ~~ m/^ <alpha>+ $/ {
               $current-range-list.push(|[$rmin .. $rmax]);
             }

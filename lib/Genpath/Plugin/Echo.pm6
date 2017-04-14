@@ -1,4 +1,4 @@
-use v6.c;
+use v6;
 use Genpath::Plugin;
 
 class Genpath::Plugin::Echo is Genpath::Plugin {

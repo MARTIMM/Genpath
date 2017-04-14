@@ -1,8 +1,9 @@
-use v6.c;
+use v6;
+use lib '.';
 use Test;
 use Genpath;
 
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
   spurt( 'genpath.cfg', Q:to/EOOPT/);
   [Genpath]
     workdir = '.'
@@ -43,7 +44,7 @@ use Genpath;
   EOOPT
 
 #-------------------------------------------------------------------------------
-subtest {
+subtest 'initialize', {
 
   my Genpath $g .= new(:ranges(['1..5']));
   is-deeply $g.counter-mappings, [0], '1 counter map';
@@ -80,11 +81,10 @@ subtest {
 
   $g .= new(:ranges([ '1..5', '0+4', '3..6']));
   is-deeply $g.range-idxs, [ 0, 0, 0], 'check range indexes';
+};
 
-}, 'initialize';
-
-#-------------------------------------------------------------------------------
-subtest {
+#------------------------------------------------------------------------------
+subtest 'generate', {
 
   my Genpath $g .= new(
     :text('%d %d %d'),
@@ -128,11 +128,10 @@ subtest {
   $g.increment-count;
   $gt = $g.generate-text;
   is $gt, "'a 05 0x0c'", "generated text $gt";
+};
 
-}, 'generate';
-
-#-------------------------------------------------------------------------------
-subtest {
+#------------------------------------------------------------------------------
+subtest 'object', {
 
   my Genpath $g .= new( :text('%1.1f'), :ranges([ '1..5',]));
 
@@ -145,32 +144,34 @@ subtest {
 #  is $echo.command-path, '/usr/bin/echo', "command path: $echo.command-path()";
 
   $g.redirect-texts;
-  
+};
 
-}, 'object';
-
-#-------------------------------------------------------------------------------
-subtest {
+#------------------------------------------------------------------------------
+subtest 'plugin t::P::MyEcho', {
 
   mkdir "t/P";
   spurt "t/P/MyEcho.pm6", Q:to/EOPLUGIN/;
-    use v6.c;
+    use v6;
+
+    unit package t;
+
     use Genpath::Plugin;
     use Test;
-    class t::P::MyEcho is Genpath::Plugin {
-    #class P::MyEcho is Genpath::Plugin {
 
-      #-----------------------------------------------------------------------------
+
+    class P::MyEcho is Genpath::Plugin {
+
+      #------------------------------------------------------------------------
       method identity ( --> Str ) {
         'MyEcho';
       }
 
-      #-----------------------------------------------------------------------------
+      #------------------------------------------------------------------------
       method command ( --> Str ) {
         '/usr/bin/echo';
       }
 
-      #-----------------------------------------------------------------------------
+      #------------------------------------------------------------------------
       method run-execute ( Str:D $command-line --> Bool ) {
 
         state Int $run-count = 0;
@@ -185,7 +186,6 @@ subtest {
 
     EOPLUGIN
 
-  #use lib 't';
   my Genpath $g .= new(
     :text('%d %d %d'),
     :ranges([ '-2..0', '0+4', '-3..-2']),
@@ -197,11 +197,10 @@ subtest {
 
   unlink "t/P/MyEcho.pm6";
   rmdir "t/P";
-
-}, 'plugin P::MyEcho';
+};
 
 #-------------------------------------------------------------------------------
-subtest {
+subtest 'plugin Wget', {
 
   my Genpath $g .= new(
     :text('http://automake.co.uk/a/img/gallery/jewellery/thumbs/%03d.jpg'),
@@ -225,12 +224,10 @@ subtest {
   rmdir 'automake.co.uk/a/img';
   rmdir 'automake.co.uk/a';
   rmdir 'automake.co.uk';
-
-}, 'plugin Wget';
+};
 
 #-------------------------------------------------------------------------------
 # Cleanup
-#
 unlink 'genpath.cfg';
 done-testing();
 exit(0);

@@ -3,6 +3,9 @@
 
 ##Changelog
 
+* 0.2.3
+  * Changes forced by perl6 changes
+  * Dropped File::HomeDir in favor of $*HOME
 * 0.2.2
   * Config file change in tests modifications
 * 0.2.1

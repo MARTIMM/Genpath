@@ -1,6 +1,4 @@
-use v6.c;
-
-use File::HomeDir;
+use v6;
 use Config::TOML;
 
 class Genpath::Options {
@@ -22,7 +20,7 @@ class Genpath::Options {
       if not $config-file.IO ~~ :r {
         $config-file = ".$config-file";
         if not $config-file.IO ~~ :r {
-          $config-file = File::HomeDir.my-home ~ "/$config-file";
+          $config-file = $*HOME.Str ~ "/$config-file";
         }
 
         else {
