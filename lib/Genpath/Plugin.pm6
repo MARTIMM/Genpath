@@ -42,25 +42,11 @@ class Genpath::Plugin {
 
       $object = ::($module-name).new;
       $!module-names{$module-name} = ::($module-name);
+#note "mod: $module-name, $object.^name()";
     }
 
     $object;
   }
-
-#`{{
-  #-----------------------------------------------------------------------------
-  method generate-object ( Str:D $module-name --> Genpath::Plugin ) {
-
-say "Module init '$module-name': ", ::($module-name).perl;
-    my Genpath::Plugin $object;
-    if $!module-names{$module-name}:exists {
-      $object = ::($module-name).new;
-    }
-#say "Module init: ", $object.perl;
-
-    $object;
-  }
-}}
 
   #-----------------------------------------------------------------------------
   method run-init ( Str:D :$option-section ) {

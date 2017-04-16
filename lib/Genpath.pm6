@@ -15,7 +15,7 @@ class Genpath:ver<0.2.3> {
   has Bool $.ignore-errors is rw = False;
   has Str $!option-section;
 
-  has Genpath::Plugin $!plugin-hook handles <install-plugin>;
+  has Genpath::Plugin $!plugin-hook;# handles <install-plugin>;
   has Genpath::Plugin $!plugin-object;
 
   # Regular expressions
@@ -50,7 +50,6 @@ class Genpath:ver<0.2.3> {
     $!plugin-hook = Genpath::Plugin.new unless $!plugin-hook.defined;
 
     # See if caller gives an object of its own
-    #
     if $object.defined and $object.^name ~~ m/^ 'Genpath::Plugin::' / {
       $!plugin-object = $object;
     }
@@ -60,7 +59,17 @@ class Genpath:ver<0.2.3> {
       $plugin-module = 'Genpath::Plugin::Wget' if $plugin-module eq 'Wget';
 
       $!plugin-object = $!plugin-hook.install-plugin( $plugin-module, :$plugin-path);
+#note "PO 0: $!plugin-object.^name()";
+#note "PO 1: $!plugin-object.perl()";
     }
+  }
+
+  #----------------------------------------------------------------------------
+  method install-plugin ( |c ) {
+
+    $!plugin-object = $!plugin-hook.install-plugin(|c);
+#note "G IP: $!plugin-object.^name()";
+#$!plugin-object;
   }
 
   #----------------------------------------------------------------------------

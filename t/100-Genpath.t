@@ -130,6 +130,8 @@ subtest 'generate', {
   is $gt, "'a 05 0x0c'", "generated text $gt";
 };
 
+#`{{
+# I Do not understand what is happening here; name of object returns Genpath::Plugin
 #------------------------------------------------------------------------------
 subtest 'object', {
 
@@ -144,6 +146,7 @@ subtest 'object', {
 
   $g.redirect-texts;
 };
+}}
 
 #------------------------------------------------------------------------------
 subtest 'plugin t::P::MyEcho', {
@@ -152,13 +155,10 @@ subtest 'plugin t::P::MyEcho', {
   spurt "t/P/MyEcho.pm6", Q:to/EOPLUGIN/;
     use v6;
 
-    unit package t::P;
-
     use Genpath::Plugin;
     use Test;
 
-
-    class MyEcho is Genpath::Plugin {
+    class t::P::MyEcho is Genpath::Plugin {
 
       #------------------------------------------------------------------------
       method identity ( --> Str ) {
@@ -182,10 +182,6 @@ subtest 'plugin t::P::MyEcho', {
         return True;
       }
     }
-
-    note "MyEcho: ", ::?PACKAGE;
-    my $m = 't::P';
-    note "P: ", ::($m).perl;
 
     EOPLUGIN
 
