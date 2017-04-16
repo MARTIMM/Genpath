@@ -135,8 +135,7 @@ subtest 'object', {
 
   my Genpath $g .= new( :text('%1.1f'), :ranges([ '1..5',]));
 
-  $g.install-plugin('Genpath::Plugin::Echo');
-  my $echo = $g.generate-object('Genpath::Plugin::Echo');
+  my $echo = $g.install-plugin('Genpath::Plugin::Echo');
   is $echo.^name, 'Genpath::Plugin::Echo', 'Echo plugin';
 
 # We let the Echo have a workdir in /tmp so we cannot test these line anymore
@@ -153,13 +152,13 @@ subtest 'plugin t::P::MyEcho', {
   spurt "t/P/MyEcho.pm6", Q:to/EOPLUGIN/;
     use v6;
 
-    unit package t;
+    unit package t::P;
 
     use Genpath::Plugin;
     use Test;
 
 
-    class P::MyEcho is Genpath::Plugin {
+    class MyEcho is Genpath::Plugin {
 
       #------------------------------------------------------------------------
       method identity ( --> Str ) {
@@ -183,6 +182,10 @@ subtest 'plugin t::P::MyEcho', {
         return True;
       }
     }
+
+    note "MyEcho: ", ::?PACKAGE;
+    my $m = 't::P';
+    note "P: ", ::($m).perl;
 
     EOPLUGIN
 

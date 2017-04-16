@@ -2,6 +2,7 @@ use v6;
 use Genpath::Plugin;
 use Genpath::Options;
 
+#------------------------------------------------------------------------------
 class Genpath:ver<0.2.3> {
 
   has Str $.sprintf-text = '';
@@ -14,11 +15,10 @@ class Genpath:ver<0.2.3> {
   has Bool $.ignore-errors is rw = False;
   has Str $!option-section;
 
-  has Genpath::Plugin $!plugin-hook;
+  has Genpath::Plugin $!plugin-hook handles <install-plugin>;
   has Genpath::Plugin $!plugin-object;
 
   # Regular expressions
-  #
   # something like: number,number+ ... number
   my regex if-number { <[-+]>? <digit>+ ( '.' <digit>+ ) ? };
   my regex dot3list { <if-number> ( ',' <if-number> )+ }
@@ -30,7 +30,7 @@ class Genpath:ver<0.2.3> {
   my regex dot2list-item { <dot2spec1> | <dot2spec2> | <if-number> | <alnum>+ };
   my regex dot2list { <dot2list-item> ( ',' <dot2list-item> )* };
 
-  #-----------------------------------------------------------------------------
+  #----------------------------------------------------------------------------
   submethod BUILD (
 
     Str :$text = '',
@@ -59,12 +59,11 @@ class Genpath:ver<0.2.3> {
       $plugin-module = 'Genpath::Plugin::Echo' if $plugin-module eq 'Echo';
       $plugin-module = 'Genpath::Plugin::Wget' if $plugin-module eq 'Wget';
 
-      $!plugin-hook.install-plugin( $plugin-module, :$plugin-path);
-      $!plugin-object = $!plugin-hook.generate-object($plugin-module);
+      $!plugin-object = $!plugin-hook.install-plugin( $plugin-module, :$plugin-path);
     }
   }
 
-  #-----------------------------------------------------------------------------
+  #----------------------------------------------------------------------------
   method !initialize-range-lists ( ) {
 
     loop ( my $range-i = 0; $range-i < $!ranges.elems; $range-i++) {
@@ -184,10 +183,9 @@ class Genpath:ver<0.2.3> {
     }
   }
 
-  #-----------------------------------------------------------------------------
+  #----------------------------------------------------------------------------
   # Initialize range references. These are the indexes of the range lists and
   # thus set to 0.
-  #
   method !initialize-range-references ( ) {
 
     loop ( my $counter-i = 0; $counter-i < $!range-lists.elems; $counter-i++) {
@@ -196,15 +194,13 @@ class Genpath:ver<0.2.3> {
     }
   }
 
-  #-----------------------------------------------------------------------------
-  #
+  #----------------------------------------------------------------------------
   method get-args ( --> Array ) {
 
     return $!plugin-object.run-args;
   }
 
-  #-----------------------------------------------------------------------------
-  #
+  #----------------------------------------------------------------------------
   method redirect-texts ( ) {
 
     $!plugin-object.run-init(:$!option-section);
@@ -227,8 +223,7 @@ class Genpath:ver<0.2.3> {
     $!plugin-object.run-finish;
   }
 
-  #-----------------------------------------------------------------------------
-  #
+  #----------------------------------------------------------------------------
   method generate-text ( ) {
 
     my @counters;
@@ -243,8 +238,7 @@ class Genpath:ver<0.2.3> {
     return sprintf( "'$text'", @counters);
   }
 
-  #-----------------------------------------------------------------------------
-  #
+  #----------------------------------------------------------------------------
   method increment-count ( ) {
 
     # Increment last counter first
@@ -322,17 +316,16 @@ class Genpath:ver<0.2.3> {
       }
 
       # While counting backwards the last counter is 0. Control will pass here
-      # only when counters are reset for the next round or when a counter depends
-      # on another counter.
+      # only when counters are reset for the next round or when a counter
+      # depends on another counter.
       #
       $!end-of-count = True unless $counter-i;
     }
   }
 
-  #-----------------------------------------------------------------------------
+  #----------------------------------------------------------------------------
   # Skip the rest of the last counter by resetting it to zero and incrementing
   # the lower counter by one.
-  #
   method skip-count ( ) {
 
     my $ci;
@@ -366,8 +359,8 @@ class Genpath:ver<0.2.3> {
     while $not-incremented and $not-finished {
 
       # While counting backwards the last counter is 0. Control will pass here
-      # only when counters are reset for the next round or when a counter depends
-      # on another counter.
+      # only when counters are reset for the next round or when a counter
+      # depends on another counter.
       #
       if $counter-i <= 0 {
         $!end-of-count = True;
@@ -434,9 +427,8 @@ class Genpath:ver<0.2.3> {
     }
   }
 
-  #-----------------------------------------------------------------------------
+  #----------------------------------------------------------------------------
   # Skip locked counters
-  #
   method !skip-locked-counters ( Int $counter-i is copy ) {
 
     my $ci;
@@ -454,10 +446,4 @@ class Genpath:ver<0.2.3> {
 
     return ( $counter-i, $ci, $ri);
   }
-
-  #-----------------------------------------------------------------------------
-  # Handlers
-  #
-  method install-plugin ( |args ) { $!plugin-hook.install-plugin(|args); }
-  method generate-object ( |args ) { $!plugin-hook.generate-object(|args); }
 }
