@@ -34,18 +34,15 @@ class Genpath:ver<0.2.3> {
   submethod BUILD (
 
     Str :$text = '',
-    Array :$ranges = [],
+    Array :$!ranges = [],
     Str :$plugin-module is copy = 'Echo',
     Str :$plugin-path,
     Genpath::Plugin :$object,
-    Str :$option-section = 'default'
+    Str :$!option-section = 'default'
   ) {
 
     $!sprintf-text = $text;
-    $!ranges = $ranges;
     $!end-of-count = False;
-    $!option-section = $option-section;
-
     $!counter-mappings = [^ $!ranges.elems];
     self!initialize-range-lists;
     self!initialize-range-references;
