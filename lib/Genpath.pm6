@@ -64,6 +64,7 @@ class Genpath:ver<0.2.3> {
     }
   }
 
+#`{{
   #----------------------------------------------------------------------------
   method install-plugin ( |c ) {
 
@@ -71,6 +72,7 @@ class Genpath:ver<0.2.3> {
 #note "G IP: $!plugin-object.^name()";
 #$!plugin-object;
   }
+}}
 
   #----------------------------------------------------------------------------
   method !initialize-range-lists ( ) {
