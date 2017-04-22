@@ -1,11 +1,10 @@
 {
-  "author": "Marcel Timmerman",
   "authors": "Marcel Timmerman",
   "depends": [
     "Config::TOML"
   ],
   "description": "String generator for plugin applications",
-  "license": "The Artistic License 2.0",
+  "license": "Artistic-2.0",
   "name": "Genpath",
   "perl": "6",
   "provides": {
