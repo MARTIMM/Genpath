@@ -1,7 +1,11 @@
-##Todo
-* Wait for a bugfix of perl6 to generate proper ranges involving characters
+# Generate strings using printf like construct
 
-##Changelog
+# Todo
+
+# Done
+* Wait for a bugfix of perl6 to generate proper ranges involving characters. Must do this using .succ() to get the next in range.
+
+# Changelog
 
 * 0.2.3
   * Changes forced by perl6 changes
