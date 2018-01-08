@@ -7,6 +7,8 @@
 
 # Changelog
 
+* 0.2.4
+  * Symplification in retrieving the command name from the plugin.
 * 0.2.3
   * Changes forced by perl6 changes
   * Dropped File::HomeDir in favor of $*HOME

@@ -5,7 +5,7 @@ class Genpath::Plugin {
 
   has Hash $!module-names;
   has Array $.run-args;
-  has Str $.command-path;
+#  has Str $.command-path;
   has Str $!config-file;
   has Str $!current-dir;
 
@@ -59,7 +59,7 @@ class Genpath::Plugin {
     );
 
     $!run-args.push: |@($cfg-options);
-    $!command-path = self.command;
+#    $!command-path = self.command;
 
 
     my Hash $program-control = $o.program-control(self.identity());
@@ -79,19 +79,19 @@ class Genpath::Plugin {
 
     my Bool $run-ok = True;
 
-    if ? $!command-path {
+#    if ? $!command-path {
       my Str $command-line =
-         [~] "'$.command-path'",
-             ' ',
+         [~] #"'$.command-path'",
+             #' ',
              (map { "'$_' " unless $_ ~~ m/^ \s* $/ }, @$!run-args),
              $request-text;
 
       $run-ok = self.run-execute($command-line);
-    }
-
-    else {
-      die "Command path not defined";
-    }
+#    }
+#
+#    else {
+#      die "Command path not defined";
+#    }
 
     $run-ok;
   }
