@@ -14,8 +14,8 @@ class Genpath::Options {
     #
     if not $!config-content.defined {
 
-      # First try to find 'genpath.cfg' current directory, Then try '.genpath.cfg'
-      # and lastly try '.genpath.cfg' in home directory
+      # First try to find 'genpath.cfg' current directory, Then try
+      # '.genpath.cfg' and lastly try '.genpath.cfg' in home directory
       #
       if not $config-file.IO ~~ :r {
         $config-file = ".$config-file";
@@ -24,7 +24,7 @@ class Genpath::Options {
         }
 
         else {
-          note "Config file not found";
+          note "Config file $config-file not found";
           exit 1;
         }
       }
