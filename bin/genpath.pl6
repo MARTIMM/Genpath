@@ -1,19 +1,15 @@
 #!/usr/bin/env perl6
 
-use v6.c;
+use v6;
 use Genpath;
 
 sub MAIN (
-  *@args,
-  Str :$p = 'Echo',
-  Str :$o = 'default',
-  Bool :$ie = False
+  *@args, Str :$p = 'Echo', Str :$o = 'default', Bool :$ie = False
 ) {
 
   my Str $text = @args.pop;
 
   # Create genpath object
-  #
   my Genpath $g .= new( :$text, :ranges(@args.list),
     :plugin-module($p), :option-section($o)
   );
@@ -21,7 +17,6 @@ sub MAIN (
   $g.ignore-errors = $ie;
 
   # Then generate all possible lines and send them to the plugin
-  #
   $g.redirect-texts;
 }
 
@@ -32,16 +27,16 @@ sub USAGE ( ) {
   Generate output to plugin using string and counters
 
   Usage:
-    genpath [-ie=<Bool>] [-o=<Str>] [-p=<Str>] [-r=<Str>] [<args> ...]
+    genpath [options] [<ranges>] text
 
   Options:
-    -ie=<Bool>  Ignore errors. Normally when there are errors found by a plugin
+    --ie=<Bool> Ignore errors. Normally when there are errors found by a plugin
                 the rest of the fastest running counter is skipped. False by
                 default.
 
-    -o=<Str>    Specify an option section, default is 'default'.
+    --o=<Str>   Specify an option section, default is 'default'.
 
-    -p=<Str>    Define plugin module name. There are some plugins provided in
+    --p=<Str>   Define plugin module name. There are some plugins provided in
                 Genpath::Plugin. Default is Genpath::Plugin::Echo.
 
   Arguments:
@@ -74,7 +69,7 @@ sub USAGE ( ) {
     When using operations on counters you will need at least 2 counter specs.
     One for te range and one for the operation. E.g
          1,5 0+4 'counters are %d and %d'
-    
+
     would produce the following lines;
          counters are 1 and 6
          counters are 1 and 7
@@ -85,14 +80,14 @@ sub USAGE ( ) {
          counters are 5 and 7
          counters are 5 and 8
          counters are 5 and 9
-    
+
     So this operation spec is line <counter number starting from 0> <operation>
     <number or characters>. Following operations are recognized: '+' add, '-'
     substract, '*' multiply, '.' and '~' for string concatenate.
-    
+
     String concatenate is less obvious so an example here;
          a..c 0.x 'string %s %s'
-    
+
     would produce the following lines;
          string a ax
          string a by
@@ -114,7 +109,7 @@ sub USAGE ( ) {
   Config file:
     The config file is taken from files ./genpath.cfg, ./.genpath.cfg or
     ~/.genpath.cfg. The content is in TOML format. A sample config;
-    
+
         [Genpath]
 
         [Genpath.Plugin]
