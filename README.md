@@ -2,16 +2,17 @@
 
 # Todo
 
-# Done
-* Wait for a bugfix of perl6 to generate proper ranges involving characters. Must do this using .succ() to get the next in range.
-
 # Changelog
 
+* 0.2.5
+  * Configuration changes.
+  * Program-config method brought into plugin to check for specific controls.
+  * Ranges are made optional.
 * 0.2.4
   * Symplification in retrieving the command name from the plugin.
 * 0.2.3
-  * Changes forced by perl6 changes
-  * Dropped File::HomeDir in favor of $*HOME
+  * Changes forced by perl6 changes.
+  * Dropped File::HomeDir in favor of $*HOME.
 * 0.2.2
   * Config file change in tests modifications
 * 0.2.1
