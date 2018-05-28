@@ -10,12 +10,6 @@ class Genpath::Plugin::Echo is Genpath::Plugin {
   }
 
   #-----------------------------------------------------------------------------
-#  method command ( --> Str ) {
-#
-#    '/usr/bin/echo';
-#  }
-
-  #-----------------------------------------------------------------------------
   method run-execute ( Str:D $command-line --> Bool ) {
 
     my Bool $exit-ok = False;
