@@ -57,21 +57,14 @@ class Genpath::Plugin {
       self.identity(),
       $option-section
     );
+#note "ID: {self.identity()}, section: $option-section";
+#note "Selected options:\n", $cfg-options.join("\n");
 
     $!run-args.push: |@($cfg-options);
 #    $!command-path = self.command;
 
-
-    my Hash $program-control = $o.program-control(self.identity());
-    if $program-control<workdir>:exists {
-      if $program-control<workdir>.IO ~~ :d {
-        chdir $program-control<workdir>;
-      }
-
-      else {
-        die "Directory $program-control<workdir> not found";
-      }
-    }
+    self.program-config($o.program-control(self.identity()))
+      if self.^can('program-config');
   }
 
   #-----------------------------------------------------------------------------

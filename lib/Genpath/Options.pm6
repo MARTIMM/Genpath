@@ -43,8 +43,7 @@ class Genpath::Options {
 
   #-----------------------------------------------------------------------------
   method config-options (
-    Str:D $identity,
-    $option-section = 'default'
+    Str:D $identity, $option-section = 'default'
     --> Array
   ) {
 
@@ -64,10 +63,9 @@ class Genpath::Options {
   #-----------------------------------------------------------------------------
   method program-control ( Str:D $identity --> Hash ) {
 
-    my Hash $os = %(
-      %(self!get-options( 'Genpath', 'Plugin')),
-      %(self!get-options( $identity)),
-    );
+    %( %(self!get-options( 'Genpath', 'Plugin')),
+       %(self!get-options( 'program', $identity)),
+    )
   }
 
   #-----------------------------------------------------------------------------
