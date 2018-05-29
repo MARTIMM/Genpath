@@ -56,7 +56,9 @@ class Genpath:auth<github:MARTIM> {
       $plugin-module = 'Genpath::Plugin::Echo' if $plugin-module eq 'Echo';
       $plugin-module = 'Genpath::Plugin::Wget' if $plugin-module eq 'Wget';
 
-      $!plugin-object = $!plugin-hook.install-plugin( $plugin-module, :$plugin-path);
+      $!plugin-object = $!plugin-hook.install-plugin(
+        $plugin-module, :$plugin-path
+      );
 #note "PO 0: $!plugin-object.^name()";
 #note "PO 1: $!plugin-object.perl()";
     }
@@ -80,7 +82,9 @@ class Genpath:auth<github:MARTIM> {
       return;
     }
 
+note "RL: $!range-lists[*]";
     loop ( my $range-i = 0; $range-i < $!ranges.elems; $range-i++) {
+note "Loop 1: $range-i";
 
       my $current-range-list := $!range-lists[$range-i];
       $current-range-list = [];
@@ -197,9 +201,10 @@ class Genpath:auth<github:MARTIM> {
   # thus set to 0.
   method !initialize-range-references ( ) {
 
-    return unless ? $!range-idxs;
+    return unless ? $!range-lists;
 
     loop ( my $counter-i = 0; $counter-i < $!range-lists.elems; $counter-i++) {
+note "Loop 2: $counter-i";
       my $ci = $!counter-mappings[$counter-i];
       $!range-idxs[$ci] = 0;
     }
