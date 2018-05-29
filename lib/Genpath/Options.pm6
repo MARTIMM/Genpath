@@ -16,16 +16,14 @@ class Genpath::Options {
 
       # First try to find 'genpath.cfg' current directory, Then try
       # '.genpath.cfg' and lastly try '.genpath.cfg' in home directory
-      #
       if not $config-file.IO ~~ :r {
         $config-file = ".$config-file";
         if not $config-file.IO ~~ :r {
           $config-file = $*HOME.Str ~ "/$config-file";
-        }
-
-        else {
-          note "Config file $config-file not found";
-          exit 1;
+          if not $config-file.IO ~~ :r {
+            note "Config file $config-file not found";
+            exit 1;
+          }
         }
       }
 
