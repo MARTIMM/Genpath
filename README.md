@@ -4,6 +4,8 @@
 
 # Changelog
 
+* 0.2.6
+  * Bug fixes
 * 0.2.5
   * Configuration changes.
   * Program-config method brought into plugin to check for specific controls.

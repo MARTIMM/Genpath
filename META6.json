@@ -17,5 +17,5 @@
     "genpath":                          "bin/genpath.pl6"
   },
   "source-url": "git://github.com/MARTIMM/genpath.git",
-  "version": "0.2.5"
+  "version": "0.2.6"
 }
