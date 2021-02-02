@@ -6,8 +6,8 @@ use Genpath::Options;
 class Genpath:auth<github:MARTIM> {
 
   has Str $.sprintf-text = '';
+  has Array $.range-lists;
   has Array $.ranges = [];
-  has Array $.range-lists = [];
   has Array $.range-idxs = [];
   has Array $.range-locks = [];
   has Array $.counter-mappings = [];
@@ -42,6 +42,8 @@ class Genpath:auth<github:MARTIM> {
     $!sprintf-text = $text;
     $!end-of-count = False;
     $!counter-mappings = [^ $!ranges.elems];
+    $!range-lists = [];
+
     self!initialize-range-lists;
     self!initialize-range-references;
 
