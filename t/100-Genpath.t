@@ -1,6 +1,7 @@
 use v6;
-use lib '.';
+use lib 't';
 use Test;
+
 use Genpath;
 
 #------------------------------------------------------------------------------
@@ -149,7 +150,7 @@ subtest 'object', {
 }}
 
 #------------------------------------------------------------------------------
-subtest 'plugin t::P::MyEcho', {
+subtest 'plugin P::MyEcho', {
 
   mkdir "t/P";
   spurt "t/P/MyEcho.pm6", Q:to/EOPLUGIN/;
@@ -158,7 +159,7 @@ subtest 'plugin t::P::MyEcho', {
     use Genpath::Plugin;
     use Test;
 
-    class t::P::MyEcho is Genpath::Plugin {
+    class P::MyEcho is Genpath::Plugin {
 
       #------------------------------------------------------------------------
       method identity ( --> Str ) {
@@ -188,7 +189,7 @@ subtest 'plugin t::P::MyEcho', {
   my Genpath $g .= new(
     :text('%d %d %d'),
     :ranges([ '-2..0', '0+4', '-3..-2']),
-    :plugin-module<t::P::MyEcho>,
+    :plugin-module<P::MyEcho>,
     #:plugin-path<t>
   );
 

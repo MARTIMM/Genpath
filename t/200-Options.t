@@ -1,5 +1,5 @@
 use v6;
-use lib '.';
+
 use Test;
 use Genpath;
 use Genpath::Options;
